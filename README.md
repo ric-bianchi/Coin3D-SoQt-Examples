@@ -37,7 +37,7 @@ We are going to install all the external dependencies **locally**, i.e. _you do 
 hg clone https://bitbucket.org/Coin3D/simage
 ```
 
-2. Now, add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later):
+2. Now, add the line below to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later). *It is not really needed for us, actually, but you will get a warning from CMake if you don't have this variable set.*
 
 ```
 set(CMAKE_MACOSX_RPATH 1)
@@ -95,13 +95,21 @@ cd ..
 
 [SoQt](https://bitbucket.org/Coin3D/soqt) links Coin with the Qt user interface. It allows to have OpenGL-based 3D content created with Coin displayed in a Qt widget.
 
-1. Get the SoQt code:
+1. Get the SoQt code
+
+1.1 If you are on Linux, get teh code from the official repository
 
 ```
 hg clone https://bitbucket.org/Coin3D/soqt
 ```
 
-2. Now, like with Simage above, you need to add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official SoQt repo, later):
+1.2 If you are on macOS, please get the code from the fork of , who fixed the problem with the Mac Retina display (there is a pull request pending, so in the future this fix will be integrated into the official SoQt repository):
+
+```
+hg clone https://bitbucket.org/roboticslibrary/soqt -r patch-hidpi
+```
+
+2. Now, like with Simage above, please add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official SoQt repo, later):
 
 ```
 set(CMAKE_MACOSX_RPATH 1)
