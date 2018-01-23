@@ -1,5 +1,8 @@
 # Coin3D-SoQt-Examples
 
+* auto-gen TOC:
+{:toc}
+
 ## Installation
 
 ### Get the needed external dependencies
