@@ -97,13 +97,13 @@ cd ..
 
 1. Get the SoQt code
 
-   * If you are on Linux, get the code from the official repository
+   * If you are on **Linux**, get the code from the official repository
 
    ```
    hg clone https://bitbucket.org/Coin3D/soqt
    ```
    
-   * If you are on macOS, please get the code from the fork of , who fixed the problem with the Mac Retina display (there is a pull request pending, so in the future this fix will be integrated into the official SoQt repository):
+   * If you are on **macOS**, please get the code from the fork of , who fixed the problem with the Mac Retina display (there is a pull request pending, so in the future this fix will be integrated into the official SoQt repository):
 
 ```
 hg clone https://bitbucket.org/roboticslibrary/soqt -r patch-hidpi
