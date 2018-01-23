@@ -25,10 +25,20 @@ Get Simage code and compile it:
 
 ```
 hg clone https://bitbucket.org/Coin3D/simage
+```
+Now, add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later):
+
+```
+set(CMAKE_MACOSX_RPATH 1)
+```
+
+Configure and compile the code:
+
+```
 mkdir build_simage
 cd build_simage
 cmake -DCMAKE_INSTALL_PREFIX=../install ../simage
-export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH # if you need it
+#export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH # only if your OS needs it
 make
 make install
 ```
