@@ -19,7 +19,9 @@
 
 ### Install the Qt framework
 
-You should install the [Qt software framework](https://www1.qt.io/developers/) on your system. Please, refer to the [official documentation](https://www.qt.io/download) for that. *(Please notice: there is an Open Source version  on the Installation page of Qt, you probably want to install that one.)*
+First of all, you should install the [Qt software framework](https://www1.qt.io/developers/) on your system.
+
+Please, refer to the [official documentation](https://www.qt.io/download) for that. *(Please notice: there is an Open Source version  on the Installation page of Qt, you probably want to install that one)*
 
 ### Install all the other needed external dependencies
 
@@ -105,10 +107,7 @@ hg clone https://bitbucket.org/Coin3D/soqt
 set(CMAKE_MACOSX_RPATH 1)
 ```
 
-3. At this point, you should have setup your Qt installation set, if not set on login by default.
-A working and correctly configured Qt environment is needed to compile SoQt. If you do not have it yet, please refer to the [section about installing Qt](#install-the-qt-framework).
-
-4. Configure and compile the code:
+3. Configure and compile the code:
 
 ```
 mkdir build_soqt
