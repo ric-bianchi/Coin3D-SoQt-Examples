@@ -1,7 +1,17 @@
 # Coin3D-SoQt-Examples
 
-* auto-gen TOC:
-{:toc}
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Coin3D-SoQt-Examples](#coin3d-soqt-examples)
+	- [Installation](#installation)
+		- [Get the needed external dependencies](#get-the-needed-external-dependencies)
+			- [Install Simage](#install-simage)
+			- [Install Coin, the 3D graphics engine](#install-coin-the-3d-graphics-engine)
+			- [Install SoQt, the windowing glue package](#install-soqt-the-windowing-glue-package)
+	- [Extra stuff](#extra-stuff)
+		- [Testing with GCC7 on LXPLUS](#testing-with-gcc7-on-lxplus)
+
+<!-- /TOC -->
 
 ## Installation
 
