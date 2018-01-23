@@ -66,8 +66,8 @@ hg clone https://bitbucket.org/Coin3D/generalmsvcgeneration
 3. Create a build directory:
 
 ```
-mkdir build
-cd build
+mkdir build_coin
+cd build_coin
 ```
 
 4. Compile and install:
