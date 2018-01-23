@@ -4,7 +4,8 @@
 
 - [Coin3D-SoQt-Examples](#coin3d-soqt-examples)
 	- [Installation](#installation)
-		- [Get the needed external dependencies](#get-the-needed-external-dependencies)
+		- [Install the Qt framework](#install-the-qt-framework)
+		- [Install all the other needed external dependencies](#install-all-the-other-needed-external-dependencies)
 			- [Install Simage](#install-simage)
 			- [Install Coin, the 3D graphics engine](#install-coin-the-3d-graphics-engine)
 			- [Install SoQt, the windowing glue package](#install-soqt-the-windowing-glue-package)
@@ -16,7 +17,11 @@
 
 ## Installation
 
-### Get the needed external dependencies
+### Install the Qt framework
+
+You should install the [Qt software framework](https://www1.qt.io/developers/) on your system. Please, refer to the [official documentation](https://www.qt.io/download) for that. *(Please notice: there is an Open Source version  on the Installation page of Qt, you probably want to install that one.)*
+
+### Install all the other needed external dependencies
 
 We are going to install all the external dependencies **locally**, i.e. _you do not need any administrator right_ to install and run this.
 
@@ -100,8 +105,8 @@ hg clone https://bitbucket.org/Coin3D/soqt
 set(CMAKE_MACOSX_RPATH 1)
 ```
 
-3. Then, you have to setup your Qt installation, if not setup on login by default.
-A working and correctly configured Qt environment is needed to compile SoQt.
+3. At this point, you should have setup your Qt installation set, if not set on login by default.
+A working and correctly configured Qt environment is needed to compile SoQt. If you do not have it yet, please refer to the [section about installing Qt](#install-the-qt-framework).
 
 4. Configure and compile the code:
 
@@ -134,7 +139,7 @@ After the compilation, you will find an executable file inside the `build` folde
 
 ### Testing with GCC7 on LXPLUS
 
-If you are at CERN and you want to test your code or the externals' code with Gcc7 on an Lxplus machine, here below are the instructions. We use the using the software framework of the ATLAS experiment to set Gcc7.
+If you work on CERN projects, you have access to the CERN computing network, and you want to test your code or the externals' code with Gcc7 on an Lxplus machine, here below you can find the relevant instructions. For convenience, we use the software framework of the ATLAS experiment to set Gcc7.
 
 ```
 mkdir build_gcc7
