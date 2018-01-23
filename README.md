@@ -21,18 +21,19 @@
 
 [Simage](https://bitbucket.org/Coin3D/simage) is the image manipulation library within the [Coin3D suite](https://bitbucket.org/Coin3D/).
 
-Get Simage code and compile it:
+1. Get Simage code:
 
 ```
 hg clone https://bitbucket.org/Coin3D/simage
 ```
-Now, add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later):
+
+2. Now, add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later):
 
 ```
 set(CMAKE_MACOSX_RPATH 1)
 ```
 
-Configure and compile the code:
+3. Configure and compile the code:
 
 ```
 mkdir build_simage
@@ -40,6 +41,7 @@ cd build_simage
 cmake -DCMAKE_INSTALL_PREFIX=../install ../simage
 make
 make install
+cd ..
 ```
 
 *Note:* You might need of this setting before compiling the package, on certain operating systems (for example, on SLC):
@@ -70,26 +72,41 @@ mkdir build_coin
 cd build_coin
 ```
 
-4. Compile and install:
+4. Configure, compile and install:
 
 ```
 cmake -DCMAKE_INSTALL_PREFIX=../install ../coin
 make
 make install
+cd ..
 ```
 
 #### Install SoQt, the windowing glue package
 
 [SoQt](https://bitbucket.org/Coin3D/soqt) links Coin with the Qt user interface. It allows to have OpenGL-based 3D content created with Coin displayed in a Qt widget.
 
-Get and install the SoQt code:
+1. Get the SoQt code:
 
 ```
 hg clone https://bitbucket.org/Coin3D/soqt
+```
+
+2. Now, like with Simage above, you need to add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official SoQt repo, later):
+
+```
+set(CMAKE_MACOSX_RPATH 1)
+```
+
+3. Then, you have to setup your Qt installation, if not setup on login by default.
+A working and correctly configured Qt environment is needed to compile SoQt.
+
+4. Configure and compile the code:
+
+```
 mkdir build_soqt
 cd build_soqt
-setupQt5 # in some way...
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
+makemake install
 ```
 
 ---
