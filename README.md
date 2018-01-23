@@ -38,9 +38,14 @@ Configure and compile the code:
 mkdir build_simage
 cd build_simage
 cmake -DCMAKE_INSTALL_PREFIX=../install ../simage
-#export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH # only if your OS needs it
 make
 make install
+```
+
+*Note:* You might need of this setting before compiling the package, on certain operating systems (for example, on SLC):
+
+```
+export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
 ```
 
 #### Install Coin, the 3D graphics engine
