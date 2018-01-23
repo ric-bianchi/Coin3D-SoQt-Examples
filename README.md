@@ -96,6 +96,7 @@ cd ..
 [SoQt](https://bitbucket.org/Coin3D/soqt) links Coin with the Qt user interface. It allows to have OpenGL-based 3D content created with Coin displayed in a Qt widget.
 
 1. Get the SoQt code
+
     - If you are on **Linux**, get the code from the official repository
     
             hg clone https://bitbucket.org/Coin3D/soqt
