@@ -101,9 +101,11 @@ cd ..
     
             hg clone https://bitbucket.org/Coin3D/soqt
 
+
     - If you are on **macOS**, please get the code from the fork of , who fixed the problem with the Mac Retina display (there is a pull request pending, so in the future this fix will be integrated into the official SoQt repository):
 
             hg clone https://bitbucket.org/roboticslibrary/soqt -r patch-hidpi
+
 
 2. Now, like with Simage above, please add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official SoQt repo, later):
 
