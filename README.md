@@ -6,7 +6,7 @@
 
 #### Install Simage
 
-Simage is the image manipulation library within the Coin3D suite.
+[Simage](https://bitbucket.org/Coin3D/simage) is the image manipulation library within the [Coin3D suite](https://bitbucket.org/Coin3D/).
 
 Get Simage code and compile it:
 
@@ -25,7 +25,7 @@ make install
 
 #### Install Coin, the 3D graphics engine
 
-1. Get the Coin source code, from the CMake branch:
+1. Get the [Coin](https://bitbucket.org/Coin3D/coin/wiki/Home) source code, from the [CMake branch](https://bitbucket.org/Coin3D/coin/branch/CMake):
 
 ```
 hg clone https://bitbucket.org/Coin3D/coin -r CMake
@@ -55,7 +55,7 @@ make install
 
 #### Install SoQt, the windowing glue package
 
-SoQt links Coin with the Qt user interface. It allows to have OpenGL-based 3D content created with Coin displayed in a Qt widget.
+[SoQt](https://bitbucket.org/Coin3D/soqt) links Coin with the Qt user interface. It allows to have OpenGL-based 3D content created with Coin displayed in a Qt widget.
 
 Get and install the SoQt code:
 
