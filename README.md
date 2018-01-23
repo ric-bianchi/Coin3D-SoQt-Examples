@@ -67,3 +67,20 @@ setupQt5 # in some way...
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
 ```
 
+---
+
+## Extra stuff
+
+### Testing with GCC7 on LXPLUS
+
+If you are at CERN and you want to test your code or the externals' code with Gcc7 on an Lxplus machine, here below are the instructions. We use the using the software framework of the ATLAS experiment to set Gcc7.
+
+```
+mkdir build_gcc7
+cd build_gcc7
+setupATLAS
+asetup none,gcc7 --cmakesetup
+cmake -DCMAKE_INSTALL_PREFIX=../install_gcc7 ../coin
+make
+make install
+```
