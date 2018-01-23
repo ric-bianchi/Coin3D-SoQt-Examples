@@ -27,9 +27,6 @@ Get Simage code and compile it:
 hg clone https://bitbucket.org/Coin3D/simage
 mkdir build_simage
 cd build_simage
-setupATLAS
-asetup none,gcc7 --cmakesetup
-lsetup python
 cmake -DCMAKE_INSTALL_PREFIX=../install ../simage
 export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH # if you need it
 make
