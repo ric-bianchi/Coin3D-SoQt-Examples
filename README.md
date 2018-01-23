@@ -8,6 +8,7 @@
 			- [Install Simage](#install-simage)
 			- [Install Coin, the 3D graphics engine](#install-coin-the-3d-graphics-engine)
 			- [Install SoQt, the windowing glue package](#install-soqt-the-windowing-glue-package)
+	- [Compiling the examples](#compiling-the-examples)
 	- [Extra stuff](#extra-stuff)
 		- [Testing with GCC7 on LXPLUS](#testing-with-gcc7-on-lxplus)
 
@@ -16,6 +17,8 @@
 ## Installation
 
 ### Get the needed external dependencies
+
+We are going to install all the external dependencies **locally**, i.e. _you do not need any administrator right_ to install and run this.
 
 #### Install Simage
 
@@ -108,6 +111,22 @@ cd build_soqt
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
 makemake install
 ```
+
+## Compiling the examples
+
+Now, you can compile the examples. In general, you will be able to compile them by using the same `install` folder we used to install the external dependencies.
+
+For example, taking the 'anti-aliasing' code as an example:
+
+```
+mkdir build_ex1_aa
+cd build_ex1_aa
+cmake -DCMAKE_INSTALL_PREFIX=../install ../Coin3D-SoQt-Examples/boilerplate_plus_antialiasing/
+make
+```
+
+After the compilation, you will find an executable file inside the `build` folder.
+
 
 ---
 
