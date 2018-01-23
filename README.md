@@ -37,13 +37,8 @@ We are going to install all the external dependencies **locally**, i.e. _you do 
 hg clone https://bitbucket.org/Coin3D/simage
 ```
 
-2. Now, add the line below to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official Simage repo, later). *It is not really needed for us, actually, but you will get a warning from CMake if you don't have this variable set.*
 
-```
-set(CMAKE_MACOSX_RPATH 1)
-```
-
-3. Configure and compile the code:
+2. Configure and compile the code:
 
 ```
 mkdir build_simage
@@ -54,7 +49,15 @@ make install
 cd ..
 ```
 
-*Note:* You might need of this setting before compiling the package, on certain operating systems (for example, on SLC):
+*Notes:* 
+
+- If you get a warning message from CMake about a variable containing `RPATH`, please add the line below to the `CMakeLists.txt` file, which is needed for modern versions of CMake (I will push the edit to the official Simage repo, later). *Apparently, it is not really needed for us, but you might want to set this to stop the warnings from CMake*
+
+```
+set(CMAKE_MACOSX_RPATH 1)
+```
+
+- You might need to set this before compiling the package, on certain operating systems (for example, on SLC):
 
 ```
 export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
@@ -109,11 +112,6 @@ hg clone https://bitbucket.org/Coin3D/soqt
 hg clone https://bitbucket.org/roboticslibrary/soqt -r patch-hidpi
 ```
 
-2. Now, like with Simage above, please add this line to the `CMakeLists.txt` file, needed for modern versions of CMake (I will push the edit to the official SoQt repo, later):
-
-```
-set(CMAKE_MACOSX_RPATH 1)
-```
 
 3. Configure and compile the code:
 
@@ -122,6 +120,14 @@ mkdir build_soqt
 cd build_soqt
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
 makemake install
+```
+
+*Notes:* 
+
+- Like with Simage above, if you get a warning message from CMake about a variable containing `RPATH`, please add the line below to the `CMakeLists.txt` file, which is needed for modern versions of CMake (I will push the edit to the official Simage repo, later). *Apparently, it is not really needed for us, but you might want to set this to stop the warnings from CMake*
+
+```
+set(CMAKE_MACOSX_RPATH 1)
 ```
 
 ## Compiling the examples
