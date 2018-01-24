@@ -1,60 +1,19 @@
 
-## Get the needed code
+# To build everything in one go
 
-### Get the Coin source code, from the CMake branch
+Copy the whole present folder in another folder, so it is encapsulated. 
 
-hg clone https://bitbucket.org/Coin3D/coin -r CMake
+Then, copy the relevant script from the `scripts` folder to one folder below this, i.e. in the 'encapsulating', main folder:
 
-### Get subrepositories' code, needed to build Coin
+```
+cp scripts/INSTALL_ALL_LXPLUS.sh ../
+```
 
-hg clone https://bitbucket.org/Coin3D/boost-header-libs-full
-hg clone https://bitbucket.org/Coin3D/generalmsvcgeneration
+Then go to the main folder and run the script:
 
-### Create a build directory
-
-mkdir build
-cd build
-
-## Standard compilation
-
-cmake -DCMAKE_INSTALL_PREFIX=../install ../coin
-make
-make install 
+```
+source INSTALL_ALL_LXPLUS.sh
+```
 
 
-## Testing GCC 7, on CERN SLC6 machines using the software framework of the ATLAS experiment
-
-mkdir build_gcc7
-cd build_gcc7
-setupATLAS
-asetup none,gcc7 --cmakesetup
-cmake -DCMAKE_INSTALL_PREFIX=../install_gcc7 ../coin
-make
-make install
-
-
-## With Simage
-
-### Get Simage code and compile it
-
-Before compiling Coin, get Simage's code and compile it
-
-hg clone https://bitbucket.org/Coin3D/simage
-mkdir build_simage
-cd build_simage
-setupATLAS
-asetup none,gcc7 --cmakesetup
-lsetup python
-cmake -DCMAKE_INSTALL_PREFIX=../install_simage ../simage
-export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH # if you need it
-make
-make install
-
-## Compiling SoQt
-
-hg clone https://bitbucket.org/Coin3D/soqt
-mkdir build_soqt
-cd build_soqt
-setupQt5 # in some way...
-cmake -DCMAKE_INSTALL_PREFIX=../install_simage ../soqt
 
