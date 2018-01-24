@@ -1,5 +1,10 @@
-setupATLAS
 
+# Setup Qt5
+setupATLAS
+export QMAKESPEC=/cvmfs/atlas-nightlies.cern.ch/repo/sw/master/sw/lcg/releases/LCG_91/qt5/5.6.2/x86_64-slc6-gcc62-opt/mkspecs/linux-g++-64
+PATHQT56=/cvmfs/atlas-nightlies.cern.ch/repo/sw/master/sw/lcg/releases/LCG_91/qt5/5.6.2/x86_64-slc6-gcc62-opt
+export PATH=$PATHQT56/bin:$PATH
+export QTDIR=$PATHQT56
 
 # Simage
 hg clone https://bitbucket.org/Coin3D/simage
