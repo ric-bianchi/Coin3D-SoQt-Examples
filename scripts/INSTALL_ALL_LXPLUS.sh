@@ -74,6 +74,8 @@ make
 echo "Examples compiled."
 
 # Run the examples
+export LD_LIBRARY_PATH=/cvmfs/atlas-nightlies.cern.ch/repo/sw/master/sw/lcg/releases/LCG_91/qt5/5.6.2/x86_64-slc6-gcc62-opt/lib:$LD_LIBRARY_PATH
+export QT_QPA_PLATFORM_PLUGIN_PATH=/cvmfs/atlas-nightlies.cern.ch/repo/sw/master/sw/lcg/releases/LCG_91/qt5/5.6.2/x86_64-slc6-gcc62-opt/plugins
 echo "Running the example..."
 ./customExaminerViewer
 fi
