@@ -57,7 +57,7 @@ cd ..
 set(CMAKE_MACOSX_RPATH 1)
 ```
 
-- You might need to set this before compiling the package, on certain operating systems (for example, on SLC):
+- You might need to set this before compiling the package, on certain operating systems:
 
 ```
 export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
