@@ -17,7 +17,7 @@
 
 ## Installation
 
-### Install the Qt framework
+### Install the Qt framework and set it working
 
 First of all, you should install the [Qt software framework](https://www1.qt.io/developers/) on your system and set it working for your terminal (on some systems, you probably have to adjust the PATH environment variable).
 
