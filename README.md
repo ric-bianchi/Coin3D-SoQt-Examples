@@ -145,7 +145,11 @@ cmake -DCMAKE_INSTALL_PREFIX=../install ../Coin3D-SoQt-Examples/boilerplate_plus
 make
 ```
 
-After the compilation, you will find an executable file inside the `build` folder.
+After the compilation, you will find an executable file inside the `build` folder, you can run it with:
+
+```
+./customExaminerViewer
+```
 
 
 ---
