@@ -121,6 +121,7 @@ cd build_soqt
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
 make
 make install
+cd ..
 ```
 
 *Notes:* 
