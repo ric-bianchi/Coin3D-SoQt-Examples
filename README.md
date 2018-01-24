@@ -119,7 +119,8 @@ hg clone https://bitbucket.org/roboticslibrary/soqt -r patch-hidpi
 mkdir build_soqt
 cd build_soqt
 cmake -DCMAKE_INSTALL_PREFIX=../install ../soqt
-makemake install
+make
+make install
 ```
 
 *Notes:* 
