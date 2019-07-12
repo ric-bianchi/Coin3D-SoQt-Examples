@@ -52,13 +52,6 @@ int main(int argc, char **argv)
 
   //--- Add 3D objects to the scene
 
-  // A shape hints tells the ordering of polygons.
-  // This ensures double-sided lighting.
-  SoShapeHints *myHints = new SoShapeHints;
-  myHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-  root->addChild(myHints);
-
-
   // add a default torus
   // MyTorus* torus = new MyTorus();
 
@@ -70,10 +63,13 @@ int main(int argc, char **argv)
   // and 4 for the cross section
   // MyTorus* torus = new MyTorus(50, 30, -1, 0, 270, 5, 4);
 
-  MyTorus* torus = new MyTorus(50, 30, 10, 0, 270, 5, 4);
+  // as above, but the toroidal segment is not hollow (i.e., two endcaps are built)
+  MyTorus* torus = new MyTorus(50, 30, 0, 0, 270, 5, 20);
 
+  // as above, but we set an inner radius too
+  // MyTorus* torus = new MyTorus(50, 30, 10, 0, 270, 5, 4);
 
-  root->addChild(torus->getShape());
+  root->addChild(torus->getSeparator());
 
   //--- Init the viewer
 

@@ -20,6 +20,7 @@
 #include <Inventor/nodes/SoShape.h>
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
+#include <Inventor/nodes/SoFaceSet.h>
 // #include <Inventor/misc/SoRef.h> // TODO: this seems to be specific to  OpenInventor
 // #include <Inventor/caches/SoNodeDependencies.h> // TODO: this seems to be specific to commercial OpenInventor
 
@@ -69,7 +70,7 @@ class MyTorus {
 public:
 
   // Retrieve internal shape representing the torus
-  SoNode* getShape();
+  SoSeparator* getSeparator();
 
 
   //
@@ -102,9 +103,6 @@ public:
   //
   SoSFInt32 pOverrideNPhi;
   //
-  //! Alternate rep required - for use by users without HEPVis shared objects
-  //
-  // SoSFNode  alternateRep;
 
   //
   //! Constructors
@@ -112,24 +110,6 @@ public:
   MyTorus();
   MyTorus(double Rtor, double Rmax, double Rmin=-1, double SPhi=0/*degrees*/, double DPhi=360/*degrees*/, int divsMajor=70, int divsMinor=40);
 
-  //
-  //! Class Initializer, required
-  //
-  // static void initClass();
-
-  //
-  //! Generate AlternateRep, required.  Generating an alternate representation
-  //! must be done upon users request.  It allows an Inventor program to read
-  //! back the file without requiring *this* code to be dynamically linked.
-  //! If the users expects that *this* code will be dynamically linked, he
-  //! need not invoke this method.
-  //
-  // virtual void generateAlternateRep();
-
-  //
-  //! We better be able to clear it, too!
-  //
-  // virtual void clearAlternateRep();
 
 protected:
 
@@ -138,19 +118,6 @@ protected:
   //
   // virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center );
 
-  //
-  //! Generate Primitives, required
-  //
-  // virtual void generatePrimitives(SoAction *action);
-
-  //
-  //! GetChildList, required whenever the class has hidden children
-  //
-  // virtual SoChildList *getChildren() const;
-
-  // virtual void doAction( SoAction* action );
-
-
 protected:
   //
   //! Destructor, required
@@ -158,33 +125,6 @@ protected:
   virtual ~MyTorus();
 
 private:
-
-  //
-  //! Generate Children. Used to create the hidden children. Required whenever
-  //! the node has hidden children.
-  //
-  // void generateChildren();
-
-  //
-  //! Used to modify hidden children when a data field is changed. Required
-  //! whenever the class has hidden children.
-  //
-  // void updateChildren();
-
-  //
-  //! ChildList. Required whenever the class has hidden children.
-  //
-  // SoChildList *m_children;
-
-  //
-  //! help with trigonometry.  increments sines and cosines by an angle.
-  //
-  // void inc(double & sinPhi, double & cosPhi, double sinDeltaPhi, double cosDeltaPhi) const {
-  //   double oldSin=sinPhi,oldCos=cosPhi;
-  //   sinPhi = oldSin*cosDeltaPhi+oldCos*sinDeltaPhi;
-  //   cosPhi = oldCos*cosDeltaPhi-oldSin*sinDeltaPhi;
-  // }
-  // static bool s_didInit;
 
   // Structure used to pass around information about how to draw the torus
   struct TorusInfo
@@ -195,26 +135,16 @@ private:
 
   // These methods are used to compute the different vertex properties given
   // the current torus subdivision we are working on during shape construction.
-  SbVec3f getVertex( int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
+  SbVec3f getVertex( double Rcross, int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
   SbVec2f getTexCoord( int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
   SbVec3f getNormal( const SbVec3f& vert, int subdiv, int numSubdivs );
 
   // Update internal shape geometry depending on the Torus field values.
-  void updateInternalShape( );
+  void updateInternalShape( SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxsection );
 
-  // vertex property node containing the geometry of the torus
-  // SoRef<SoVertexProperty> m_vertexProperty; // TODO: this seems to be specific to  OpenInventor
-  SoVertexProperty* m_vertexProperty;
-
-  // Internal shape representing the torus
-  // SoRef<SoTriangleStripSet> m_internalShape; // TODO: this seems to be specific to  OpenInventor
-  SoTriangleStripSet* m_internalShape;
-
-  // This cache handler is used as a flag to check whether or not the internal shape needs to be rebuilt.
-  // It is also needed to add a dependency on one or more inventor elements, so that the cache
-  // automatically invalidates itself when the element is changed.
-  // In our case, we need a dependancy on the Complexity element and on both radii fields.
-  // SoRef<SoNodeDependencies> m_internalShapeCache; // TODO: this seems to be specific to commercial OpenInventor
+  // build an endcap, in case of building a toroidal segment
+  void
+  buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice);
 
   // Use this structure to hold info about how to draw the torus
   TorusInfo m_info;
