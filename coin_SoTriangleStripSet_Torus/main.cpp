@@ -5,14 +5,13 @@
 // Coin includes
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoTriangleStripSet.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 // SoQt includes
 #include <Inventor/Qt/SoQt.h>
@@ -29,41 +28,6 @@
 #include <ctime>
 #include <iostream>
 #include <cmath>
-
-
-
-// build a default torus
-SoSeparator* makeTorus()
-{
-  SoSeparator *sep = new SoSeparator();
-  sep->ref();
-  MyTorus* torus = new MyTorus();
-  sep->addChild(torus->getShape());
-  return sep;
-}
-//build a toroidal segment with start and end angles
-SoSeparator* makeTorus(double Rtor, double Rmax, double SPhi, double DPhi)
-{
-  SoSeparator *sep = new SoSeparator();
-  sep->ref();
-  MyTorus* torus = new MyTorus(Rtor, Rmax, SPhi, DPhi);
-  sep->addChild(torus->getShape());
-  return sep;
-}
-// build a toroidal segment with starting and end angles and with major and minor subdivisions
-SoSeparator* makeTorus(double Rtor, double Rmax, double SPhi, double DPhi, int divsMajor, int divsMinor)
-{
-  SoSeparator *sep = new SoSeparator();
-  sep->ref();
-  MyTorus* torus = new MyTorus(Rtor, Rmax, SPhi, DPhi, divsMajor, divsMinor);
-  sep->addChild(torus->getShape());
-  return sep;
-}
-
-// SoSeparator* makeToroidalSegment(){
-//
-// }
-
 
 
 int main(int argc, char **argv)
@@ -88,20 +52,28 @@ int main(int argc, char **argv)
 
   //--- Add 3D objects to the scene
 
-  // root->addChild( makeSimpleStripSet() );
-  // root->addChild( makeSimpleStripSetWithNorms() );
-  // root->addChild( makePennant() );
-  // root->addChild( makeObeliskFaceSet() );
+  // A shape hints tells the ordering of polygons.
+  // This ensures double-sided lighting.
+  SoShapeHints *myHints = new SoShapeHints;
+  myHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  root->addChild(myHints);
 
-  // root->addChild( makeTorus() ); // add a default torus
+
+  // add a default torus
+  // MyTorus* torus = new MyTorus();
 
   // add a toroidal segment starting at 0 degrees and stopping at 270 degrees
-  root->addChild( makeTorus(50, 30, 0, 270) );
+  // MyTorus* torus = new MyTorus(50, 30, -1, 0, 270);
 
   // add a toroidal segment starting at 0 degrees and stopping at 270 degrees
   // and render it using 5 subdivisions for the major radius
   // and 4 for the cross section
-  // root->addChild( makeTorus(50, 30, 0, 270, 5, 4) );
+  // MyTorus* torus = new MyTorus(50, 30, -1, 0, 270, 5, 4);
+
+  MyTorus* torus = new MyTorus(50, 30, 10, 0, 270, 5, 4);
+
+
+  root->addChild(torus->getShape());
 
   //--- Init the viewer
 

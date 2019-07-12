@@ -2,7 +2,6 @@
 // Coin includes
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoTriangleStripSet.h>

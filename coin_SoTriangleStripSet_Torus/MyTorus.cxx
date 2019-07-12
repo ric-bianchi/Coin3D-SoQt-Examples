@@ -17,7 +17,6 @@
 
 #include <cassert>
 #include <cmath>
-// #include <Inventor/SbBox.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -29,7 +28,6 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
-// #include <Inventor/SoDB.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/misc/SoState.h>
 
