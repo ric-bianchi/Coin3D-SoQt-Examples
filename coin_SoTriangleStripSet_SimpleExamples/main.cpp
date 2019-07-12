@@ -144,6 +144,57 @@ SoSeparator *makeSimpleStripSetWithNorms() {
 }
 
 
+// Make a "circle shape" circle with a FaceSet
+SoSeparator *makeCircle() {
+
+
+  float sqrt2_2 = sin(M_PI / 4);
+  static float vertexPositions[9][3] =
+  { {  -1,  0, 0  },
+    {  -sqrt2_2,  sqrt2_2, 0 },
+    {   0,  1, 0  },
+    {   sqrt2_2,  sqrt2_2, 0 },
+    {   1,  0, 0  },
+    {   sqrt2_2, -sqrt2_2, 0 },
+    {   0, -1, 0  },
+    {  -sqrt2_2, -sqrt2_2, 0 },
+    {  -1,  0, 0  },
+    };
+
+  // We declare the number of vertices in each polygon:
+  // There are 2 polygons, we use one entry of the array per polygon:
+  // - the first polygon is a strip of 4 triangles using 6 vertices
+  // - the second polygon is composed by 2 triangles using 4 vertices
+  const int numVertices[1] = { 9 };
+
+  SoSeparator *result = new SoSeparator;
+  result->ref();
+
+  // A shape hints tells the ordering of polygons.
+  // This ensures double-sided lighting.
+  SoShapeHints *myHints = new SoShapeHints;
+  myHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  result->addChild(myHints);
+
+
+  // define the coordinates of the vertices
+  SoCoordinate3 *myCoords = new SoCoordinate3;
+  myCoords->point.setValues(0, 9, vertexPositions);
+  result->addChild(myCoords);
+
+  // define the SoTriangleStripSet, which will use the coordinates
+  // stored in the preceding SoCoordinate3 node,
+  // by using them accordingly to the information
+  // stored in the numVertices array.
+  SoFaceSet *s = new SoFaceSet;
+  s->numVertices.setValues(0, 1, numVertices); // 1 is the number of polygons defined in numVertices
+
+  result->addChild(s);
+  result->unrefNoDelete();
+  return result;
+}
+
+
 // Make a flag and a pole
 SoSeparator *makePennant() {
 
@@ -304,9 +355,10 @@ int main(int argc, char **argv)
   //--- Add 3D objects to the scene
 
   // root->addChild( makeSimpleStripSet() );
-  root->addChild( makeSimpleStripSetWithNorms() );
+  // root->addChild( makeSimpleStripSetWithNorms() );
   // root->addChild( makePennant() );
   // root->addChild( makeObeliskFaceSet() );
+  root->addChild( makeCircle() );
 
   //--- Init the viewer and launch the app
 
