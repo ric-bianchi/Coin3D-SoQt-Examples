@@ -143,8 +143,8 @@ private:
   void updateInternalShape( SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxsection );
 
   // build an endcap, in case of building a toroidal segment
-  void
-  buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice);
+  void buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice);
+  void buildEndcaps(SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxs, double Rinner, int slice);
 
   // Use this structure to hold info about how to draw the torus
   TorusInfo m_info;

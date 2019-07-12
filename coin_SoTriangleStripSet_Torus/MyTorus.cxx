@@ -201,13 +201,9 @@ MyTorus::updateInternalShape(SoTriangleStripSet* shape, SoVertexProperty* vertex
 void
 MyTorus::buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice)
 {
-  // Each endcap is a circle, made of triangles
-  // Each triangle is made of three vertices: the central point and the two vertices of the strip
+  // Each endcap is a disk, made as a FaceSet
 
-  // Number of vertices per strip = twice the number of (major subdivisions + 1)
-  // because we want to loop back to the beginning for the full toroid
-  // const int verticesPerStrip = 2 * (m_info.numt + 1);
-  // const int verticesPerStrip = 2 * m_info.numc + 1 /*the central point*/;
+  // Number of vertices per strip
   const int verticesPerFace = m_info.numc;
 
   // Number of minor subdivisions
@@ -239,7 +235,7 @@ MyTorus::buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double
     // go around top view
     for ( int stripVertex = 0; stripVertex <= m_info.numt; stripVertex++ )
     {
-      // we only want to  build the given face
+      // we only want to  build the required face
       if (stripVertex != slice)
         continue;
 
@@ -255,6 +251,81 @@ MyTorus::buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double
   vertexProperty->normal.finishEditing();
   vertexProperty->texCoord.finishEditing();
 
+}
+
+//____________________________________________________________________
+// Build the endcap's shape
+void
+MyTorus::buildEndcaps(SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxs, double Rinner, int slice)
+{
+  // Each endcap is a cirular segment, made of one triangleStrip
+
+  // Number of vertices of the strip
+  const int verticesPerFace = 2 * m_info.numc + 2;
+
+  // Number of minor subdivisions
+  const int numStrips = m_info.numc;
+
+  //Set the numVertices field of the single FaceSet accordingly
+  shape->numVertices.setNum( 1 );
+  int32_t* numVertices = shape->numVertices.startEditing();
+  numVertices[0] = verticesPerFace; // set the number of vertices of each strip
+  shape->numVertices.finishEditing();
+  // shape->numVertices.setValues(0, 1, &verticesPerFace);
+
+  // Set the size of the VertexProperty buffers
+  const int numVerticesTotal = verticesPerFace * 1;
+  vertexProperty->vertex.setNum( numVerticesTotal );
+  vertexProperty->normal.setNum( numVerticesTotal );
+  vertexProperty->texCoord.setNum( numVerticesTotal );
+
+  SbVec3f* vertices  = vertexProperty->vertex.startEditing();
+  SbVec3f* normals   = vertexProperty->normal.startEditing();
+  SbVec2f* texCoords = vertexProperty->texCoord.startEditing();
+
+  // Now fill the buffers
+  int vertexIndex = 0;
+
+  // go around cross section
+  for ( int strip = 0; strip < numStrips; strip++ )
+  {
+    // go around top view
+    for ( int stripVertex = 0; stripVertex <= m_info.numt; stripVertex++ )
+    {
+      // we only want to  build the required face
+      if (stripVertex != slice)
+        continue;
+
+        vertices[vertexIndex]  = getVertex( Rxs, strip, m_info.numc, stripVertex, m_info.numt );
+        normals[vertexIndex]   = getNormal( vertices[vertexIndex], stripVertex, m_info.numt );
+        texCoords[vertexIndex] = getTexCoord( strip, m_info.numc, stripVertex, m_info.numt );
+
+        vertexIndex++;
+
+        vertices[vertexIndex]  = getVertex( Rinner, strip, m_info.numc, stripVertex, m_info.numt );
+        normals[vertexIndex]   = getNormal( vertices[vertexIndex], stripVertex, m_info.numt );
+        texCoords[vertexIndex] = getTexCoord( strip, m_info.numc, stripVertex, m_info.numt );
+
+        vertexIndex++;
+    }
+  } // end go around cross section
+
+  // last two vertices, to close the strip
+  vertices[vertexIndex]  = getVertex( Rxs, 0, m_info.numc, slice, m_info.numt );
+  normals[vertexIndex]   = getNormal( vertices[vertexIndex], slice, m_info.numt );
+  texCoords[vertexIndex] = getTexCoord( 0, m_info.numc, slice, m_info.numt );
+
+  vertexIndex++;
+
+  vertices[vertexIndex]  = getVertex( Rinner, 0, m_info.numc, slice, m_info.numt );
+  normals[vertexIndex]   = getNormal( vertices[vertexIndex], slice, m_info.numt );
+  texCoords[vertexIndex] = getTexCoord( 0, m_info.numc, slice, m_info.numt );
+
+  vertexProperty->vertex.finishEditing();
+  vertexProperty->normal.finishEditing();
+  vertexProperty->texCoord.finishEditing();
+
+  return;
 }
 
 
@@ -346,6 +417,25 @@ MyTorus::getSeparator( )
 
     updateInternalShape( shape_inner, vertexProperty_inner, fRmin.getValue() );
     sep->addChild(shape_inner);
+
+    // add endcaps
+    SoVertexProperty* vertexProperty_endcaps_a = new SoVertexProperty;
+    vertexProperty_endcaps_a->normalBinding.setValue( SoVertexProperty::PER_VERTEX );
+    vertexProperty_endcaps_a->materialBinding.setValue( SoVertexProperty::OVERALL );
+    SoTriangleStripSet* shape_endcaps_a = new SoTriangleStripSet;
+    shape_endcaps_a->vertexProperty.setValue( vertexProperty_endcaps_a );
+    buildEndcaps( shape_endcaps_a, vertexProperty_endcaps_a, fRmax.getValue(), fRmin.getValue(), 0 );
+    sep->addChild(shape_endcaps_a);
+
+    SoVertexProperty* vertexProperty_endcaps_b = new SoVertexProperty;
+    vertexProperty_endcaps_b->normalBinding.setValue( SoVertexProperty::PER_VERTEX );
+    vertexProperty_endcaps_b->materialBinding.setValue( SoVertexProperty::OVERALL );
+    SoTriangleStripSet* shape_endcaps_b = new SoTriangleStripSet;
+    shape_endcaps_b->vertexProperty.setValue( vertexProperty_endcaps_b );
+    buildEndcaps( shape_endcaps_b, vertexProperty_endcaps_b, fRmax.getValue(), fRmin.getValue(), m_info.numt );
+    sep->addChild(shape_endcaps_b);
+
+
   }
 
   // if Rmin == 0, then we add endcaps
