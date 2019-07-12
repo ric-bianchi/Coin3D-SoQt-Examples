@@ -10,6 +10,7 @@
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoShapeHints.h>
 
 // SoQt includes
 #include <Inventor/Qt/SoQt.h>
@@ -29,7 +30,7 @@
 
 
 // Make two simple polygons out of strips of triangles
-SoSeparator *makeSimpleStrip() {
+SoSeparator *makeSimpleStripSet() {
 
   // Two polygons:
   // - The first polygon is a bent rectangle built with 4 triangles defined by 6 vertices:
@@ -53,6 +54,12 @@ SoSeparator *makeSimpleStrip() {
   SoSeparator *result = new SoSeparator;
   result->ref();
 
+  // A shape hints tells the ordering of polygons.
+  // This ensures double-sided lighting.
+  SoShapeHints *myHints = new SoShapeHints;
+  myHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  result->addChild(myHints);
+
   // define the coordinates of the vertices
   SoCoordinate3 *myCoords = new SoCoordinate3;
   myCoords->point.setValues(0, 10, vertexPositions);
@@ -69,8 +76,10 @@ SoSeparator *makeSimpleStrip() {
   result->unrefNoDelete();
   return result;
 }
+
+// TODO: to be fixed! Normals are not calculated properly, visualization is wrong!
 // Make two simple polygons out of strips of triangles, with explicit normals
-SoSeparator *makeSimpleStripWithNorms() {
+SoSeparator *makeSimpleStripSetWithNorms() {
 
   // Two polygons:
   // - The first polygon is a bent rectangle built with 4 triangles defined by 6 vertices:
@@ -93,24 +102,29 @@ SoSeparator *makeSimpleStripWithNorms() {
 
   // Normals for each polygon:
   // Each entry defines a vector, which is the normal to the polygon's surface
-  static float norms[8][3] =
+  static float norms[6][3] =
   {
-    { 0, 0, -1}, {  0, 0, -1}, //the first two triangles living in the x/y plane (normals are // z)
+    { 0, 0, 1}, {  0, 0, 1}, //the first two triangles living in the x/y plane (normals are // z)
     {1, 0, 0}, { 1, 0, 0}, //the second two triangles living in the z/y plane (normals are // -x)
-    { 0, 0, -1}, {  0, 0, 1},//the 4 triangles of the rotated square, all living in the x/y plane (normals are // z)
-    { 0, 0, -1}, {  0, 0, 1},
+    { 0, 0, -1}, {  0, 0, 1}//the 4 triangles of the rotated square, all living in the x/y plane (normals are // z)
   };
 
 
   SoSeparator *result = new SoSeparator;
   result->ref();
 
+  // A shape hints tells the ordering of polygons.
+  // This ensures double-sided lighting.
+  SoShapeHints *myHints = new SoShapeHints;
+  myHints->vertexOrdering = SoShapeHints::CLOCKWISE;
+  result->addChild(myHints);
+
   // Define the normals used:
   SoNormal *myNormals = new SoNormal;
-  myNormals->vector.setValues(0, 8, norms);
+  myNormals->vector.setValues(0, 6, norms);
   result->addChild(myNormals);
   SoNormalBinding *myNormalBinding = new SoNormalBinding;
-  myNormalBinding->value = SoNormalBinding::PER_FACE;
+  myNormalBinding->value = SoNormalBinding::PER_PART;
   result->addChild(myNormalBinding);
 
   // define the coordinates of the vertices
@@ -167,9 +181,30 @@ SoSeparator *makePennant() {
 
   SoSeparator *result = new SoSeparator;
   result->ref();
+
+  // A shape hints tells the ordering of polygons.
+  // This ensures double-sided lighting.
+  SoShapeHints *myHints = new SoShapeHints;
+  myHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  result->addChild(myHints);
+
+  // Define colors for the strips
+  // Colors for the 12 faces
+  const float colors[2][3] ={
+    { .5, .5,  1 }, // purple flag
+    { .4, .4, .4 }, // grey flagpole
+  };
+  SoMaterial *myMaterials = new SoMaterial;
+  myMaterials->diffuseColor.setValues(0, 2, colors);
+  result->addChild(myMaterials);
+  SoMaterialBinding *myMaterialBinding = new SoMaterialBinding;
+  myMaterialBinding->value = SoMaterialBinding::PER_PART;
+  result->addChild(myMaterialBinding);   // D
+
   SoCoordinate3 *myCoords = new SoCoordinate3;
   myCoords->point.setValues(0, 40, vertexPositions);
   result->addChild(myCoords);
+
   SoTriangleStripSet *s = new SoTriangleStripSet;
   s->numVertices.setValues(0, 2, numVertices);
   result->addChild(s);
@@ -246,6 +281,7 @@ SoSeparator* makeObeliskFaceSet()
 }
 
 
+
 int main(int argc, char **argv)
 {
 
@@ -268,11 +304,12 @@ int main(int argc, char **argv)
 
   //--- Add 3D objects to the scene
 
-  root->addChild( makeSimpleStrip() );
+  // root->addChild( makeSimpleStripSet() );
+  root->addChild( makeSimpleStripSetWithNorms() );
   // root->addChild( makePennant() );
   // root->addChild( makeObeliskFaceSet() );
 
-  //--- Init the viewer
+  //--- Init the viewer and launch the app
 
   // Initialize an examiner viewer:
   SoQtExaminerViewer * eviewer = new SoQtExaminerViewer(&mainwin);
