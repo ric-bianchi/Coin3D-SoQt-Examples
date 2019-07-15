@@ -137,14 +137,15 @@ private:
   // the current torus subdivision we are working on during shape construction.
   SbVec3f getVertex( double Rcross, int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
   SbVec2f getTexCoord( int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
-  SbVec3f getNormal( const SbVec3f& vert, int subdiv, int numSubdivs );
+  SbVec3f getNormal( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert=false );
+  SbVec3f getNormalEndCap( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert=false );
 
   // Update internal shape geometry depending on the Torus field values.
-  void updateInternalShape( SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxsection );
+  void updateInternalShape( SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxsection, bool inner=false );
 
   // build an endcap, in case of building a toroidal segment
-  void buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice);
-  void buildEndcaps(SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxs, double Rinner, int slice);
+  void buildEndcaps(SoFaceSet* shape, SoVertexProperty* vertexProperty, double Rxs, int slice, bool invert=false);
+  void buildEndcaps(SoTriangleStripSet* shape, SoVertexProperty* vertexProperty, double Rxs, double Rinner, int slice, bool invert=false);
 
   // Use this structure to hold info about how to draw the torus
   TorusInfo m_info;

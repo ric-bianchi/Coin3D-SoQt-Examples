@@ -63,10 +63,13 @@ int main(int argc, char **argv)
   // and 4 for the cross section
   // MyTorus* torus = new MyTorus(50, 30, -1, 0, 270, 5, 4);
 
-  // as above, but the toroidal segment is not hollow (i.e., two complete endcaps are built)
-  // MyTorus* torus = new MyTorus(50, 30, 0, 0, 270, 5, 20);
+  // as above but higher render quality
+  // MyTorus* torus = new MyTorus(50, 30, -1, 0, 270, 70, 40);
 
-  // as above, but we set an inner radius too (and two hollow endcaps are built)
+  // as above, but the toroidal segment is not hollow (i.e., two filled endcaps are built)
+  // MyTorus* torus = new MyTorus(50, 30, 0, 0, 270, 70, 40);
+
+  // now, we set an inner radius too (and two hollow endcaps are built)
   // MyTorus* torus = new MyTorus(50, 30, 10, 0, 270, 5, 4);
 
   // as above, but with a higher number of strips (i.e., higher render quality)
