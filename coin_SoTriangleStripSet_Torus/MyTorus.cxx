@@ -17,22 +17,11 @@
 
 #include <cassert>
 #include <cmath>
-#include <Inventor/actions/SoAction.h>
-#include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
+// #include <Inventor/nodes/SoDirectionalLight.h>
 
 #include <iostream>
-#include <iomanip>
-
 
 
 // TODO: add this to SbMath.h ??
@@ -57,32 +46,30 @@ MyTorus::MyTorus()
   // : m_internalShape(nullptr)
 {
   // sample values
-  fRtor = 50;
-  fRmax = 30;
-  fRmin = 10;
+  fRMajor = 50;
+  fRMinor = 30;
+  fRInner = 10;
   fSPhi = 0;
   fDPhi = TWOPI;
 
   // Set the number of polygons to use
   m_info.numt = 50; // number of divisions from top view
   m_info.numc = 20; // number of divisions around the torus cross section
-
-  m_myfile.open ("vertices.csv");
 }
 
 //____________________________________________________________________
 // Constructor with arguments
-MyTorus::MyTorus(double Rtor, double Rmax, double Rmin, double SPhi /*degrees*/, double DPhi/*degrees*/, int divsMajor, int divsMinor)
+MyTorus::MyTorus(double rMajor, double rMinor, double rInner, double SPhi /*degrees*/, double DPhi/*degrees*/, int divsMajor, int divsMinor)
   // : m_internalShape(nullptr)
 {
   // set values
-  fRtor = Rtor;
-  fRmax = Rmax;
+  fRMajor = rMajor;
+  fRMinor = rMinor;
 
-  if (Rmin==-1) {
-    fRmin = Rmax;
+  if (rInner==-1) {
+    fRInner = rMinor;
   } else {
-    fRmin = Rmin;
+    fRInner = rInner;
   }
 
   fSPhi = (SPhi * M_PI ) / 180;
@@ -91,8 +78,6 @@ MyTorus::MyTorus(double Rtor, double Rmax, double Rmin, double SPhi /*degrees*/,
   // Set the number of polygons to use
   m_info.numt = divsMajor; // number of divisions from top view
   m_info.numc = divsMinor; // number of divisions around the torus cross section
-
-  m_myfile.open ("vertices.csv");
 }
 
 
@@ -100,7 +85,7 @@ MyTorus::MyTorus(double Rtor, double Rmax, double Rmin, double SPhi /*degrees*/,
 // Destructor
 MyTorus::~MyTorus()
 {
-  m_myfile.close();
+  // nothing to do
 }
 
 
@@ -299,7 +284,7 @@ MyTorus::getVertex( double Rcross, int minorSubdiv, int numMinorSubdivs, int sub
   const double angle = fSPhi.getValue() + fDPhi.getValue() * static_cast<double>( subdiv ) / static_cast<double>( numSubdivs );
   const double minorAngle = TWOPI * static_cast<double>( minorSubdiv ) / static_cast<double>( numMinorSubdivs );
 
-  const double minorAngleCos = fRtor.getValue() + Rcross * cos(minorAngle); // this is the coordinate along the radius of the torus
+  const double minorAngleCos = fRMajor.getValue() + Rcross * cos(minorAngle); // this is the coordinate along the radius of the torus
 
   // return the coordinates of the vertex in spherical coordinates
   return SbVec3f( static_cast<float>(minorAngleCos * cos(angle)), // x/y plane
@@ -325,8 +310,8 @@ MyTorus::getNormal( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert
 
   const double angle = fSPhi.getValue() + fDPhi.getValue() * static_cast<double>( subdiv ) / static_cast<double>( numSubdivs );
 
-  SbVec3f norm( vert[0] - fRtor.getValue() * static_cast<float>(cos(angle)),
-                vert[1] - fRtor.getValue() * static_cast<float>(sin(angle)),
+  SbVec3f norm( vert[0] - fRMajor.getValue() * static_cast<float>(cos(angle)),
+                vert[1] - fRMajor.getValue() * static_cast<float>(sin(angle)),
                 vert[2] );
   norm.normalize();
   // if an inner torus, we invert the normals
@@ -343,25 +328,25 @@ MyTorus::getNormalEndCap( const SbVec3f& vert, int subdiv, int numSubdivs, bool 
   const double angle = fSPhi.getValue() + fDPhi.getValue() * static_cast<double>( subdiv ) / static_cast<double>( numSubdivs );
 
   // debug
-  // std::cout << "SPhi,DPhi: " << fSPhi.getValue() << "," << fDPhi.getValue() << ", subdiv: " << subdiv << ", numSubdivs: " << numSubdivs << ", angle: " << angle << ", RcosA: " << fRtor.getValue() * static_cast<float>(cos(angle)) << ", RsinA: " <<  fRtor.getValue() * static_cast<float>(sin(angle)) << std::endl;
+  // std::cout << "SPhi,DPhi: " << fSPhi.getValue() << "," << fDPhi.getValue() << ", subdiv: " << subdiv << ", numSubdivs: " << numSubdivs << ", angle: " << angle << ", RcosA: " << fRMajor.getValue() * static_cast<float>(cos(angle)) << ", RsinA: " <<  fRMajor.getValue() * static_cast<float>(sin(angle)) << std::endl;
   // std::cout << "vert: " << vert.toString().getString() << std::endl;
 
   SbVec3f norm;
   if ((angle > M_PI_2) && (angle <= M_PI)) {
-    norm.setValue( fRtor.getValue() * (-1 * static_cast<float>(sin(angle))),
-                   fRtor.getValue() * static_cast<float>(cos(angle)),
+    norm.setValue( fRMajor.getValue() * (-1 * static_cast<float>(sin(angle))),
+                   fRMajor.getValue() * static_cast<float>(cos(angle)),
                    0);
   } else if ((angle > M_PI) && (angle <= 3 * M_PI_2)) {
-    norm.setValue( fRtor.getValue() * abs(static_cast<float>(sin(angle))),
-                   fRtor.getValue() * static_cast<float>(cos(angle)),
+    norm.setValue( fRMajor.getValue() * abs(static_cast<float>(sin(angle))),
+                   fRMajor.getValue() * static_cast<float>(cos(angle)),
                    0);
   } else if ((angle > 3 * M_PI_2) && (angle < 2 * M_PI)) {
-    norm.setValue( fRtor.getValue() * abs(static_cast<float>(sin(angle))),
-                   fRtor.getValue() * static_cast<float>(cos(angle)),
+    norm.setValue( fRMajor.getValue() * abs(static_cast<float>(sin(angle))),
+                   fRMajor.getValue() * static_cast<float>(cos(angle)),
                    0);
   } else {
-    norm.setValue( fRtor.getValue() * static_cast<float>(sin(angle)),
-                   fRtor.getValue() * static_cast<float>(cos(angle)),
+    norm.setValue( fRMajor.getValue() * static_cast<float>(sin(angle)),
+                   fRMajor.getValue() * static_cast<float>(cos(angle)),
                    0);
   }
   norm.normalize();
@@ -398,11 +383,11 @@ MyTorus::getSeparator( )
   SoTriangleStripSet* shape = new SoTriangleStripSet;
   shape->vertexProperty.setValue( vertexProperty );
 
-  updateInternalShape( shape, vertexProperty, fRmax.getValue() );
+  updateInternalShape( shape, vertexProperty, fRMinor.getValue() );
   sep->addChild(shape);
 
-  // if Rmin is set to 0, then we add filled endcaps
-  if (fRmin.getValue() == 0) {
+  // if rInner is set to 0, then we add filled endcaps
+  if (fRInner.getValue() == 0) {
 
     std::cout << "\nBuild starting endcap..." <<std::endl;
     // first endcap, at the beginning of the toroidal segment
@@ -411,7 +396,7 @@ MyTorus::getSeparator( )
     vertexProperty_endcaps_a->materialBinding.setValue( SoVertexProperty::OVERALL );
     SoFaceSet* shape_endcaps_a = new SoFaceSet;
     shape_endcaps_a->vertexProperty.setValue( vertexProperty_endcaps_a );
-    buildEndcaps( shape_endcaps_a, vertexProperty_endcaps_a, fRmax.getValue(), 0, true );
+    buildEndcaps( shape_endcaps_a, vertexProperty_endcaps_a, fRMinor.getValue(), 0, true );
     sep->addChild(shape_endcaps_a);
 
     std::cout << "\nBuild ending endcap..." <<std::endl;
@@ -421,11 +406,11 @@ MyTorus::getSeparator( )
     vertexProperty_endcaps_b->materialBinding.setValue( SoVertexProperty::OVERALL );
     SoFaceSet* shape_endcaps_b = new SoFaceSet;
     shape_endcaps_b->vertexProperty.setValue( vertexProperty_endcaps_b );
-    buildEndcaps( shape_endcaps_b, vertexProperty_endcaps_b, fRmax.getValue(), m_info.numt);
+    buildEndcaps( shape_endcaps_b, vertexProperty_endcaps_b, fRMinor.getValue(), m_info.numt);
     sep->addChild(shape_endcaps_b);
   }
-  // if Rmin is set, we build a second, inner torus and pierced endcaps
-  else if (fRmin.getValue() != -1) {
+  // if rInner is set, we build a second, inner torus and pierced endcaps
+  else if (fRInner.getValue() != -1) {
 
     // add a second, inner torus
     SoVertexProperty* vertexProperty_inner = new SoVertexProperty;
@@ -433,7 +418,7 @@ MyTorus::getSeparator( )
     vertexProperty_inner->materialBinding.setValue( SoVertexProperty::OVERALL );
     SoTriangleStripSet* shape_inner = new SoTriangleStripSet;
     shape_inner->vertexProperty.setValue( vertexProperty_inner );
-    updateInternalShape( shape_inner, vertexProperty_inner, fRmin.getValue(), true );
+    updateInternalShape( shape_inner, vertexProperty_inner, fRInner.getValue(), true );
     sep->addChild(shape_inner);
 
     // add endcaps
@@ -444,7 +429,7 @@ MyTorus::getSeparator( )
     vertexProperty_endcaps_a->materialBinding.setValue( SoVertexProperty::OVERALL );
     SoTriangleStripSet* shape_endcaps_a = new SoTriangleStripSet;
     shape_endcaps_a->vertexProperty.setValue( vertexProperty_endcaps_a );
-    buildEndcaps( shape_endcaps_a, vertexProperty_endcaps_a, fRmax.getValue(), fRmin.getValue(), 0, true);
+    buildEndcaps( shape_endcaps_a, vertexProperty_endcaps_a, fRMinor.getValue(), fRInner.getValue(), 0, true);
     sep->addChild(shape_endcaps_a);
 
     // second endcap, at the end of the toroidal segment
@@ -454,7 +439,7 @@ MyTorus::getSeparator( )
     vertexProperty_endcaps_b->materialBinding.setValue( SoVertexProperty::OVERALL );
     SoTriangleStripSet* shape_endcaps_b = new SoTriangleStripSet;
     shape_endcaps_b->vertexProperty.setValue( vertexProperty_endcaps_b );
-    buildEndcaps( shape_endcaps_b, vertexProperty_endcaps_b, fRmax.getValue(), fRmin.getValue(), m_info.numt );
+    buildEndcaps( shape_endcaps_b, vertexProperty_endcaps_b, fRMinor.getValue(), fRInner.getValue(), m_info.numt );
     sep->addChild(shape_endcaps_b);
   }
 

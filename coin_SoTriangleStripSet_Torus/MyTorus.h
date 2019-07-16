@@ -21,15 +21,10 @@
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
 #include <Inventor/nodes/SoFaceSet.h>
-// #include <Inventor/misc/SoRef.h> // TODO: this seems to be specific to  OpenInventor
-// #include <Inventor/caches/SoNodeDependencies.h> // TODO: this seems to be specific to commercial OpenInventor
-
-#include <fstream> // for debug
-
 
 class SoSFNode;
 /*!
- * Node:             Torus
+ * Class:             MyTorus
  *
  * Description: The Inventor version of the G4Cons Geant Geometry entity
  *
@@ -37,9 +32,9 @@ class SoSFNode;
  *
  *
  * Shape class representing a torus.
- * The fRtor radius field controls the major radius of the torus (from the center).
- * The fRmax radius field controls the outer radius of the cross section of the torus.
- * The fRmin radius field controls the inner radius of the cross section of the torus.
+ * The fRMajor radius field controls the major radius of the torus (from the center).
+ * The fRMinor radius field controls the outer radius of the cross section of the torus.
+ * The fRInner radius field controls the inner radius of the cross section of the torus.
  *
  * The documentation from Geant4 says:
  *
@@ -53,9 +48,9 @@ class SoSFNode;
  *
  * Member Data:
  *
- *      fRtor  radius of the torus itself, from the center
- *      fRmax  outside radius of the torus cross-section (the torus "tube")
- *      fRmin  inside radius  of the torus cross-section (Rmin=0 if not hollow)
+ *      fRMajor  radius of the torus itself, from the center
+ *      fRMinor  outside radius of the torus cross-section (the torus "tube")
+ *      fRInner  inside radius  of the torus cross-section (Rmin=0 if not hollow)
  *
  *      fSPhi   starting angle of the segment in radians
  *      fDPhi   delta angle of the segment in radians
@@ -74,17 +69,17 @@ public:
 
 
   //
-  //! Inside radius
+  //! Torus' radius
   //
-  SoSFFloat fRmin;
+  SoSFFloat fRMajor;
   //
   //! Outside radius
   //
-  SoSFFloat fRmax;
+  SoSFFloat fRMinor;
   //
-  //! Torus' radius
+  //! Inside radius
   //
-  SoSFFloat fRtor;
+  SoSFFloat fRInner;
   //
   //! Starting angle, in radians
   //
@@ -108,7 +103,7 @@ public:
   //! Constructors
   //
   MyTorus();
-  MyTorus(double Rtor, double Rmax, double Rmin=-1, double SPhi=0/*degrees*/, double DPhi=360/*degrees*/, int divsMajor=70, int divsMinor=40);
+  MyTorus(double rMajor, double rMinor, double rInner=-1, double SPhi=0/*degrees*/, double DPhi=360/*degrees*/, int divsMajor=70, int divsMinor=40);
 
 
 protected:
@@ -149,10 +144,6 @@ private:
 
   // Use this structure to hold info about how to draw the torus
   TorusInfo m_info;
-
-  // output data for debugging
-  std::ofstream m_myfile;
-
 };
 
 #endif
