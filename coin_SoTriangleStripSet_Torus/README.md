@@ -47,7 +47,7 @@ Among them, the **REQUIRED**  arguments are:
 
 These additional arguments are **OPTIONAL**:
 
-- rInner, the inner radius of the cavity if the torus is hollow; i.e., the inner radius of the "pipe"
+- `rInner`, the inner radius of the cavity if the torus is hollow; i.e., the inner radius of the "pipe"
 - `SPhi`, the starting angle of the toroidal segment, in degrees
 - `DPhi`, the angular length of the toroidal segment, in degrees
 - `divsMajor`, the number of faces used to render the toroidal shape along the toroidal length (the "major" length)

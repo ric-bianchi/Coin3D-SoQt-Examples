@@ -145,11 +145,9 @@ MyTorus::updateInternalShape(SoTriangleStripSet* shape, SoVertexProperty* vertex
       }
     }
   }
-
   vertexProperty->vertex.finishEditing();
   vertexProperty->normal.finishEditing();
   vertexProperty->texCoord.finishEditing();
-
 }
 
 
@@ -316,7 +314,7 @@ MyTorus::getNormal( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert
   norm.normalize();
   // if an inner torus, we invert the normals
   if (invert) {
-    norm *= -1;
+    norm.negate();
   }
   return norm;
 }

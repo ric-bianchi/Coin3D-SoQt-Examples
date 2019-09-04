@@ -130,7 +130,7 @@ private:
 
   // These methods are used to compute the different vertex properties given
   // the current torus subdivision we are working on during shape construction.
-  SbVec3f getVertex( double Rcross, int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
+  SbVec3f getVertex( double radius, int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
   SbVec2f getTexCoord( int minorSubdiv, int numMinorSubdivs, int subdiv, int numSubdivs );
   SbVec3f getNormal( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert=false );
   SbVec3f getNormalEndCap( const SbVec3f& vert, int subdiv, int numSubdivs, bool invert=false );
